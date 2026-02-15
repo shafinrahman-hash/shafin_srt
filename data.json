@@ -1,0 +1,11 @@
+{
+    "user": {
+        "id": 123,
+        "name": "Alice",
+        "profile": {
+            "email": "alice@example.com",
+            "location": "London"
+        }
+    },
+    "status": "completed"
+}
