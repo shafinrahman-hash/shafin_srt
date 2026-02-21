@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catch Ayna</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f0f12;
+      --surface: #1a1a20;
+      --border: #2d2d36;
+      --text: #e8e6e3;
+      --muted: #8b8792;
+      --accent: #7c6cf9;
+      --accent-dim: #5b4dd4;
+      --success: #4ade80;
+      --danger: #f87171;
+      --warning: #fbbf24;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(124, 108, 249, 0.15), transparent),
+        radial-gradient(ellipse 60% 40% at 80% 100%, rgba(124, 108, 249, 0.08), transparent);
+    }
+
+    .game-container {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .btn {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 0.75rem 1.25rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.1s, background 0.2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    /* Catch game */
+    .catch-section h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .catch-section .catch-subtitle {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .catch-counter {
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .catch-arena {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: crosshair;
+      margin-bottom: 1rem;
+    }
+
+    .catch-target {
+      position: absolute;
+      width: 48px;
+      height: 48px;
+      left: 0;
+      top: 0;
+      pointer-events: none;
+      border-radius: 50%;
+      box-shadow: 0 4px 12px rgba(124, 108, 249, 0.4);
+      overflow: hidden;
+    }
+
+    .catch-target img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .catch-arena.catch-disabled {
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    .catch-message {
+      text-align: center;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 0.75rem;
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+      display: none;
+    }
+
+    .catch-message.show {
+      display: block;
+    }
+
+    .catch-message.caught {
+      background: rgba(74, 222, 128, 0.15);
+      color: var(--success);
+    }
+
+    .catch-message.missed {
+      background: rgba(248, 113, 113, 0.15);
+      color: var(--danger);
+    }
+
+    .btn-catch-start {
+      display: block;
+      width: 100%;
+      background: var(--accent);
+      color: white;
+      margin-bottom: 0.5rem;
+    }
+
+    .btn-catch-start:hover {
+      background: var(--accent-dim);
+    }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <section class="catch-section">
+      <h1>Catch Ayna</h1>
+      <p class="catch-subtitle">Click on Ayna to catch her. Click elsewhere = fail.</p>
+      <p class="catch-counter" id="catchCounter">Failed attempts: 0 / 5</p>
+      <div class="catch-arena" id="catchArena">
+        <div class="catch-target" id="catchTarget">
+          <img src="images/child.png" alt="Catch target" id="catchTargetImg" />
+        </div>
+      </div>
+      <div class="catch-message" id="catchMessage"></div>
+      <button class="btn btn-catch-start" id="catchStartBtn">Start catch game</button>
+    </section>
+  </div>
+
+  <script>
+    const catchArena = document.getElementById('catchArena');
+    const catchTarget = document.getElementById('catchTarget');
+    const catchMessage = document.getElementById('catchMessage');
+    const catchStartBtn = document.getElementById('catchStartBtn');
+    const catchCounter = document.getElementById('catchCounter');
+
+    const TARGET_SIZE = 48;
+    const MAX_TRIES = 5;
+    let catchGameActive = false;
+    let catchAnimationId = null;
+    let targetX = 0, targetY = 0;
+    let vx = 2, vy = 2;
+    let failedAttempts = 0;
+
+    function updateCounter() {
+      catchCounter.textContent = 'Failed attempts: ' + failedAttempts + ' / ' + MAX_TRIES;
+    }
+
+    function getCatchArenaRect() {
+      const r = catchArena.getBoundingClientRect();
+      return { left: r.left, top: r.top, width: r.width, height: r.height };
+    }
+
+    function moveCatchTarget() {
+      if (!catchGameActive) return;
+      const rect = getCatchArenaRect();
+      const maxX = rect.width - TARGET_SIZE;
+      const maxY = rect.height - TARGET_SIZE;
+
+      targetX += vx;
+      targetY += vy;
+      if (targetX <= 0) { targetX = 0; vx = -vx; }
+      if (targetX >= maxX) { targetX = maxX; vx = -vx; }
+      if (targetY <= 0) { targetY = 0; vy = -vy; }
+      if (targetY >= maxY) { targetY = maxY; vy = -vy; }
+
+      catchTarget.style.left = targetX + 'px';
+      catchTarget.style.top = targetY + 'px';
+      catchAnimationId = requestAnimationFrame(moveCatchTarget);
+    }
+
+    function stopCatchGame() {
+      catchGameActive = false;
+      if (catchAnimationId) {
+        cancelAnimationFrame(catchAnimationId);
+        catchAnimationId = null;
+      }
+      catchArena.classList.add('catch-disabled');
+      catchStartBtn.style.display = 'block';
+    }
+
+    function showCatchResult(isCaught) {
+      if (isCaught) {
+        catchMessage.classList.add('show', 'caught');
+        catchMessage.textContent = 'Caught! Well done!';
+        stopCatchGame();
+      } else {
+        failedAttempts++;
+        updateCounter();
+        catchMessage.classList.add('show', 'missed');
+        catchMessage.textContent = 'Missed! Failed attempts: ' + failedAttempts + ' / ' + MAX_TRIES;
+        if (failedAttempts >= MAX_TRIES) {
+          catchMessage.textContent = 'Game over! You used all 5 tries.';
+          stopCatchGame();
+        }
+      }
+    }
+
+    function startCatchGame() {
+      failedAttempts = 0;
+      updateCounter();
+      catchMessage.classList.remove('show', 'caught', 'missed');
+      catchMessage.textContent = '';
+      catchArena.classList.remove('catch-disabled');
+      catchStartBtn.style.display = 'none';
+
+      const rect = getCatchArenaRect();
+      targetX = Math.random() * Math.max(0, rect.width - TARGET_SIZE);
+      targetY = Math.random() * Math.max(0, rect.height - TARGET_SIZE);
+      vx = 2 + Math.random() * 2;
+      vy = 2 + Math.random() * 2;
+      if (Math.random() > 0.5) vx = -vx;
+      if (Math.random() > 0.5) vy = -vy;
+
+      catchTarget.style.left = targetX + 'px';
+      catchTarget.style.top = targetY + 'px';
+      catchGameActive = true;
+      moveCatchTarget();
+    }
+
+    catchArena.addEventListener('click', (e) => {
+      if (!catchGameActive) return;
+      const rect = getCatchArenaRect();
+      const clickX = e.clientX - rect.left;
+      const clickY = e.clientY - rect.top;
+      const hit = clickX >= targetX && clickX <= targetX + TARGET_SIZE &&
+                  clickY >= targetY && clickY <= targetY + TARGET_SIZE;
+      showCatchResult(hit);
+    });
+
+    catchStartBtn.addEventListener('click', startCatchGame);
+  </script>
+</body>
+</html>
