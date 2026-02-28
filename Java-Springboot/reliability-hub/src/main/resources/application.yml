@@ -1,0 +1,38 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,loggers,threaddump,heapdump,env
+  endpoint:
+    heapdump:
+      enabled: true
+    health:
+      probes:
+        enabled: true
+  info:
+    env:
+      enabled: true
+    java:
+      enabled: true
+    os:
+      enabled: true
+
+info:
+  app:
+    name: Reliability Hub
+    description: SRE observability and reliability demo — Spring Boot
+    version: 0.0.1-SNAPSHOT
+    owner: Mohammed Shafin Thayyil
+    role: Technical Architect – Site Reliability Engineer
+    location: London, UK
+  stack:
+    framework: Spring Boot 4
+    build-tool: Gradle (Kotlin DSL)
+    java-version: 17
+  links:
+    home: /
+    quick-links: /links
+    sre-ping: /api/sre/ping
+    sre-runtime: /api/sre/runtime
+    prometheus: /actuator/prometheus
+    health: /actuator/health
