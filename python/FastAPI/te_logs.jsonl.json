@@ -1,0 +1,14 @@
+{"ts":"2026-01-24T10:00:01Z","agent":"lhr-agent-01","test":"HTTP - login","p95_ms":420,"status":"OK"}
+{"ts":"2026-01-24T10:01:10Z","agent":"lhr-agent-01","test":"HTTP - login","p95_ms":820,"status":"ERROR"}
+{"ts":"2026-01-24T10:02:05Z","agent":"ams-agent-02","test":"DNS - resolve","p95_ms":120,"status":"OK"}
+{"ts":"2026-01-24T10:03:44Z","agent":"fra-agent-03","test":"HTTP - checkout","p96_ms":650,"status":"WARN"}
+{"ts":"2026-01-24T10:18:42Z","agent":"ams-agent-02","test":"DNS - resolve","p95_ms":160,"status":"OK"}
+{"ts":"2026-01-24T10:07:15Z","agent":"fra-agent-03","test":"HTTP - checkout","p95_ms":890,"status":"ERROR"}
+{"ts":"2026-01-24T10:22:01Z","agent":"nyc-agent-04","test":"HTTP - search","p95_ms":620,"status":"WARN"}
+{"ts":"2026-01-24T09:59:50Z","agent":"lhr-agent-01","test":"HTTP - login","p95_ms":780,"status":"ERROR"}
+{"ts":"2026-01-24T10:15:09Z","agent":"sin-agent-05","test":"HTTP - payment","p95_ms":480,"status":"OK"}
+{"ts":"2026-01-24T10:03:27Z","agent":"ams-agent-02","test":"TCP - connect","p95_ms":340,"status":"OK"}
+{"ts":"2026-01-24T10:20:55Z","agent":"fra-agent-03","test":"HTTP - checkout","p95_ms":1020,"status":"ERROR"}
+{"ts":"2026-01-24T10:01:33Z","agent":"nyc-agent-04","test":"DNS - resolve","p95_ms":210,"status":"WARN"}
+{"ts":"2026-01-24T10:25:18Z","agent":"lhr-agent-01","test":"HTTP - login","p95_ms":1300,"status":"ERROR"}
+{"ts":"2026-01-24T10:12:06Z","agent":"sin-agent-05","test":"HTTP - payment","p95_ms":670,"status":"WARN"}
