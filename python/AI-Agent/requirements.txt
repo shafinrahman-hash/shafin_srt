@@ -1,0 +1,8 @@
+strands-agents>=1.30.0
+strands-agents-tools>=0.2.20
+
+# Optional: For OpenAI (set OPENAI_API_KEY env var)
+strands-agents[openai]>=1.30.0
+
+# Optional: For local Ollama (pip install strands-agents[ollama])
+# strands-agents[ollama]>=1.30.0
